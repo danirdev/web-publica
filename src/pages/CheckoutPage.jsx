@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { MessageCircle } from 'lucide-react'; // Puedes instalar lucide-react si no tienes el ícono
 
 const CheckoutPage = () => {
-  const { cart, total, clearCart } = useCart();
+  const { cart, total, clearCart, updateQuantity, removeFromCart } = useCart();
   const [cliente, setCliente] = useState({ nombre: '', telefono: '' });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -72,10 +72,44 @@ const CheckoutPage = () => {
         {/* Resumen */}
         <div className="space-y-4 mb-8">
           {cart.map(item => (
-            <div key={item.id} className="flex justify-between border-b border-gray-200 pb-2">
-              <span>{item.cantidad}x {item.nombre}</span>
-              <span className="font-bold">${item.cantidad * item.precio}</span>
+            <div key={item.id} className="flex flex-col sm:flex-row justify-between sm:items-center border-b border-gray-200 pb-4 gap-4">
+              <div className="flex-1">
+                 <span className="font-bold text-lg">{item.nombre}</span>
+                 <div className="text-gray-500 text-sm">${item.precio} u.</div>
+              </div>
+              
+              <div className="flex items-center gap-4">
+                {/* Controles de Cantidad */}
+                <div className="flex items-center border-2 border-black rounded-lg overflow-hidden">
+                  <button 
+                    onClick={() => updateQuantity(item.id, -1)}
+                    className="px-3 py-1 hover:bg-gray-200 font-bold border-r-2 border-black active:bg-gray-300"
+                  >
+                    -
+                  </button>
+                  <span className="px-4 font-bold min-w-12 text-center">{item.cantidad}</span>
+                  <button 
+                    onClick={() => updateQuantity(item.id, 1)}
+                    className="px-3 py-1 hover:bg-gray-200 font-bold border-l-2 border-black active:bg-gray-300"
+                  >
+                    +
+                  </button>
+                </div>
+
+                <div className="font-bold text-xl w-24 text-right">
+                  ${item.cantidad * item.precio}
+                </div>
+
+                <button 
+                  onClick={() => removeFromCart(item.id)}
+                  title="Eliminar del pedido"
+                  className="p-2 text-red-500 hover:bg-red-50 rounded-lg hover:text-red-700 transition-colors"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+                </button>
+              </div>
             </div>
+
           ))}
           <div className="text-xl font-black text-right pt-2">Total: ${total}</div>
         </div>

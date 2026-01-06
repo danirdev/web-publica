@@ -37,8 +37,19 @@ export const CartProvider = ({ children }) => {
   const total = cart.reduce((acc, p) => acc + (p.precio * p.cantidad), 0);
   const totalItems = cart.reduce((acc, p) => acc + p.cantidad, 0);
 
+  // Actualizar cantidad
+  const updateQuantity = (id, amount) => {
+    setCart(prev => prev.map(item => {
+      if (item.id === id) {
+        const newQuantity = item.cantidad + amount;
+        return { ...item, cantidad: newQuantity > 0 ? newQuantity : 1 }; // Mínimo 1
+      }
+      return item;
+    }));
+  };
+
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart, clearCart, total, totalItems }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart, updateQuantity, clearCart, total, totalItems }}>
       {children}
     </CartContext.Provider>
   );
