@@ -117,15 +117,16 @@ ADD COLUMN IF NOT EXISTS estado TEXT DEFAULT 'completado'; -- 'pendiente' (web) 
 
 -- 2. Permitir que la Web Pública (usuarios anónimos) pueda CREAR pedidos
 -- OJO: Solo permitimos INSERT, no ver ni editar ventas de otros.
-CREATE POLICY "Publico crea pedidos web"
-ON public.ventas FOR INSERT
-TO anon
-WITH CHECK (true);
+-- 2. (DESHABILITADO POR SEGURIDAD) - Usamos RPC 'crear_pedido_web'
+-- CREATE POLICY "Publico crea pedidos web"
+-- ON public.ventas FOR INSERT
+-- TO anon
+-- WITH CHECK (true);
 
-CREATE POLICY "Publico crea detalles web"
-ON public.detalle_ventas FOR INSERT
-TO anon
-WITH CHECK (true);
+-- CREATE POLICY "Publico crea detalles web"
+-- ON public.detalle_ventas FOR INSERT
+-- TO anon
+-- WITH CHECK (true);
 
 -- 3. (Opcional) Ajustar la vista de historial para mostrar el nombre del cliente
 -- No requiere SQL, lo haremos en el frontend.
@@ -141,17 +142,17 @@ DROP POLICY IF EXISTS "Admin total ventas" ON public.ventas;
 DROP POLICY IF EXISTS "Solo personal ve ventas" ON public.ventas;
 
 -- 2. Crear las políticas limpias
--- Permitir que el público guarde ventas
-CREATE POLICY "Publico crea pedidos web"
-ON public.ventas FOR INSERT
-TO anon
-WITH CHECK (true);
+-- Permitir que el público guarde ventas (DESHABILITADO - USAR RPC)
+-- CREATE POLICY "Publico crea pedidos web"
+-- ON public.ventas FOR INSERT
+-- TO anon
+-- WITH CHECK (true);
 
--- Permitir que el público guarde los detalles (items)
-CREATE POLICY "Publico crea detalles web"
-ON public.detalle_ventas FOR INSERT
-TO anon
-WITH CHECK (true);
+-- Permitir que el público guarde los detalles (items) (DESHABILITADO - USAR RPC)
+-- CREATE POLICY "Publico crea detalles web"
+-- ON public.detalle_ventas FOR INSERT
+-- TO anon
+-- WITH CHECK (true);
 
 -- Permitir al admin ver y editar todo
 CREATE POLICY "Admin total ventas"
