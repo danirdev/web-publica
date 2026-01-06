@@ -23,32 +23,15 @@ const CheckoutPage = () => {
     setLoading(true);
 
     try {
-      // 1. Guardar en Base de Datos (Igual que antes)
-      const { data: venta, error: errorVenta } = await supabase
-        .from('ventas')
-        .insert([{
-          total: total,
-          metodo_pago: 'Web', 
-          estado: 'pendiente',
-          cliente_nombre: cliente.nombre,
-          cliente_telefono: cliente.telefono
-        }])
-        .select()
-        .single();
+      // 1. Usar función RPC segura (Bypassea RLS)
+      const { data: ventaId, error: errorVenta } = await supabase.rpc('crear_pedido_web', {
+        p_cliente_nombre: cliente.nombre,
+        p_cliente_telefono: cliente.telefono,
+        p_total: total,
+        p_detalles: cart // Pasamos el carrito directo, la función SQL lo procesa
+      });
 
       if (errorVenta) throw errorVenta;
-
-      // 2. Guardar detalles en BD
-      const detalles = cart.map(item => ({
-        venta_id: venta.id,
-        producto_id: item.id,
-        cantidad: item.cantidad,
-        precio_unitario: item.precio,
-        subtotal: item.cantidad * item.precio
-      }));
-
-      const { error: errorDetalle } = await supabase.from('detalle_ventas').insert(detalles);
-      if (errorDetalle) throw errorDetalle;
 
       // 3. GENERAR MENSAJE DE WHATSAPP
       // Construimos el texto línea por línea
@@ -57,7 +40,7 @@ const CheckoutPage = () => {
         .join('%0A'); // %0A es el salto de línea para URLs
 
       const mensaje = `Hola! Soy *${cliente.nombre}*.%0A` +
-                      `Acabo de hacer el pedido web *#${venta.id}*.%0A%0A` +
+                      `Acabo de hacer el pedido web *#${ventaId}*.%0A%0A` +
                       `*Detalle del pedido:*%0A${itemsTexto}%0A%0A` +
                       `*Total a pagar: $${total}*`;
 
@@ -67,7 +50,7 @@ const CheckoutPage = () => {
       // Abrimos WhatsApp en una pestaña nueva
       window.open(urlWhatsapp, '_blank');
       
-      alert(`¡Pedido #${venta.id} guardado! Se abrirá WhatsApp para enviar el detalle.`);
+      alert(`¡Pedido #${ventaId} guardado! Se abrirá WhatsApp para enviar el detalle.`);
       clearCart();
       navigate('/'); 
 

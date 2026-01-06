@@ -158,4 +158,45 @@ CREATE POLICY "Admin total ventas"
 ON public.ventas FOR ALL
 TO authenticated
 USING (true)
-WITH CHECK (true);
+
+-- =============================================
+-- FUNCIONES SEGURAS PARA WEB (RPC)
+-- =============================================
+CREATE OR REPLACE FUNCTION public.crear_pedido_web(
+    p_cliente_nombre TEXT,
+    p_cliente_telefono TEXT,
+    p_total NUMERIC,
+    p_detalles JSONB
+)
+RETURNS BIGINT
+LANGUAGE plpgsql
+SECURITY DEFINER -- Ejecutar con permisos de admin (bypassea RLS para escritura)
+SET search_path = public -- Seguridad extra
+AS $$
+DECLARE
+    v_venta_id BIGINT;
+    v_item JSONB;
+BEGIN
+    -- 1. Insertar Venta
+    INSERT INTO public.ventas (total, metodo_pago, estado, cliente_nombre, cliente_telefono)
+    VALUES (p_total, 'Web', 'pendiente', p_cliente_nombre, p_cliente_telefono)
+    RETURNING id INTO v_venta_id;
+
+    -- 2. Insertar Detalles
+    -- Iteramos sobre el JSONB que recibimos del frontend
+    FOR v_item IN SELECT * FROM jsonb_array_elements(p_detalles)
+    LOOP
+        INSERT INTO public.detalle_ventas (venta_id, producto_id, cantidad, precio_unitario, subtotal)
+        VALUES (
+            v_venta_id,
+            (v_item->>'id')::BIGINT,
+            (v_item->>'cantidad')::INTEGER,
+            (v_item->>'precio')::NUMERIC,
+            ((v_item->>'cantidad')::INTEGER * (v_item->>'precio')::NUMERIC)
+        );
+    END LOOP;
+
+    -- 3. Retornar ID de venta para el frontend
+    RETURN v_venta_id;
+END;
+$$;
