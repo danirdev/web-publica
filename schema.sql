@@ -129,3 +129,33 @@ WITH CHECK (true);
 
 -- 3. (Opcional) Ajustar la vista de historial para mostrar el nombre del cliente
 -- No requiere SQL, lo haremos en el frontend.
+
+-- =============================================
+-- POLÍTICAS PARA VENTAS
+-- =============================================
+
+-- 1. Borrar políticas anteriores para evitar el error "already exists"
+DROP POLICY IF EXISTS "Publico crea pedidos web" ON public.ventas;
+DROP POLICY IF EXISTS "Publico crea detalles web" ON public.detalle_ventas;
+DROP POLICY IF EXISTS "Admin total ventas" ON public.ventas;
+DROP POLICY IF EXISTS "Solo personal ve ventas" ON public.ventas;
+
+-- 2. Crear las políticas limpias
+-- Permitir que el público guarde ventas
+CREATE POLICY "Publico crea pedidos web"
+ON public.ventas FOR INSERT
+TO anon
+WITH CHECK (true);
+
+-- Permitir que el público guarde los detalles (items)
+CREATE POLICY "Publico crea detalles web"
+ON public.detalle_ventas FOR INSERT
+TO anon
+WITH CHECK (true);
+
+-- Permitir al admin ver y editar todo
+CREATE POLICY "Admin total ventas"
+ON public.ventas FOR ALL
+TO authenticated
+USING (true)
+WITH CHECK (true);
