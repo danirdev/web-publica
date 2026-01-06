@@ -3,13 +3,25 @@ import { useCart } from '../context/CartContext'; // Asegúrate de importar desd
 import { supabase } from '../supabase';
 import { SectionTitle } from '../components/UI';
 import { useNavigate } from 'react-router-dom';
-import { MessageCircle } from 'lucide-react'; // Puedes instalar lucide-react si no tienes el ícono
+import { MessageCircle } from 'lucide-react'; 
+import { toast } from 'sonner';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+
+const checkoutSchema = z.object({
+  nombre: z.string().min(2, 'El nombre debe tener al menos 2 caracteres'),
+  telefono: z.string().min(10, 'El teléfono debe tener al menos 10 dígitos').regex(/^\d+$/, 'Solo se permiten números'),
+});
 
 const CheckoutPage = () => {
   const { cart, total, clearCart, updateQuantity, removeFromCart } = useCart();
-  const [cliente, setCliente] = useState({ nombre: '', telefono: '' });
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+
+  const { register, handleSubmit, formState: { errors } } = useForm({
+    resolver: zodResolver(checkoutSchema),
+  });
 
   // --- CONFIGURACIÓN ---
   // Pon aquí tu número con código de país, sin espacios ni símbolos (+).
@@ -17,16 +29,15 @@ const CheckoutPage = () => {
   const TELEFONO_NEGOCIO = "5493881234567"; 
   // ---------------------
 
-  const handlePedido = async (e) => {
-    e.preventDefault();
+  const onSubmit = async (data) => {
     if (cart.length === 0) return;
     setLoading(true);
 
     try {
       // 1. Usar función RPC segura (Bypassea RLS)
       const { data: ventaId, error: errorVenta } = await supabase.rpc('crear_pedido_web', {
-        p_cliente_nombre: cliente.nombre,
-        p_cliente_telefono: cliente.telefono,
+        p_cliente_nombre: data.nombre,
+        p_cliente_telefono: data.telefono,
         p_total: total,
         p_detalles: cart // Pasamos el carrito directo, la función SQL lo procesa
       });
@@ -39,7 +50,7 @@ const CheckoutPage = () => {
         .map(item => `- ${item.cantidad}x ${item.nombre} ($${item.cantidad * item.precio})`)
         .join('%0A'); // %0A es el salto de línea para URLs
 
-      const mensaje = `Hola! Soy *${cliente.nombre}*.%0A` +
+      const mensaje = `Hola! Soy *${data.nombre}*.%0A` +
                       `Acabo de hacer el pedido web *#${ventaId}*.%0A%0A` +
                       `*Detalle del pedido:*%0A${itemsTexto}%0A%0A` +
                       `*Total a pagar: $${total}*`;
@@ -50,13 +61,13 @@ const CheckoutPage = () => {
       // Abrimos WhatsApp en una pestaña nueva
       window.open(urlWhatsapp, '_blank');
       
-      alert(`¡Pedido #${ventaId} guardado! Se abrirá WhatsApp para enviar el detalle.`);
+      toast.success(`¡Pedido enviado!`); 
       clearCart();
       navigate('/'); 
 
     } catch (error) {
       console.error(error);
-      alert('Error enviando pedido: ' + error.message);
+      toast.error('Error enviando pedido: ' + error.message);
     } finally {
       setLoading(false);
     }
@@ -115,28 +126,26 @@ const CheckoutPage = () => {
         </div>
 
         {/* Formulario */}
-        <form onSubmit={handlePedido} className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
             <label className="block font-bold mb-1">Tu Nombre</label>
             <input 
-              required
               type="text" 
-              className="w-full border-2 border-black p-2 rounded-lg focus:ring-4 focus:ring-green-200 outline-none"
-              value={cliente.nombre}
-              onChange={e => setCliente({...cliente, nombre: e.target.value})}
+              className={`w-full border-2 p-2 rounded-lg focus:ring-4 outline-none ${errors.nombre ? 'border-red-500 focus:ring-red-200' : 'border-black focus:ring-green-200'}`}
               placeholder="Ej: Juan Pérez"
+              {...register('nombre')}
             />
+            {errors.nombre && <p className="text-red-500 text-sm mt-1 font-medium">{errors.nombre.message}</p>}
           </div>
           <div>
             <label className="block font-bold mb-1">Teléfono</label>
             <input 
-              required
               type="tel" 
-              className="w-full border-2 border-black p-2 rounded-lg focus:ring-4 focus:ring-green-200 outline-none"
-              value={cliente.telefono}
-              onChange={e => setCliente({...cliente, telefono: e.target.value})}
-              placeholder="Ej: 388 123 4567"
+              className={`w-full border-2 p-2 rounded-lg focus:ring-4 outline-none ${errors.telefono ? 'border-red-500 focus:ring-red-200' : 'border-black focus:ring-green-200'}`}
+              placeholder="Ej: 3881234567"
+              {...register('telefono')}
             />
+             {errors.telefono && <p className="text-red-500 text-sm mt-1 font-medium">{errors.telefono.message}</p>}
           </div>
 
           <button 

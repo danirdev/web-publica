@@ -11,6 +11,8 @@ import ContactoPage from './pages/ContactoPage';
 // Wrapper para Layout que necesita location (si fuera necesario animaciones)
 // Pero simple por ahora.
 
+import { Toaster } from 'sonner';
+
 const Layout = () => {
     const [cartCount, setCartCount] = useState(0);
     const location = useLocation();
@@ -22,6 +24,7 @@ const Layout = () => {
 
     return (
         <div className="min-h-screen bg-[#FFFDF5] font-sans selection:bg-yellow-300 flex flex-col">
+            <Toaster richColors position="top-right" />
             <Navbar cartCount={cartCount} onCartClick={() => {}} />
             
             <main className="grow">
