@@ -1,8 +1,5 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
-
-const CartContext = createContext();
-
-export const useCart = () => useContext(CartContext);
+import React, { useState, useEffect } from 'react';
+import CartContext from './CartContext';
 
 export const CartProvider = ({ children }) => {
   // Intentamos recuperar del localStorage al iniciar

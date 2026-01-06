@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { ShoppingCart, Menu, X } from 'lucide-react'; // Removing imports not used here
 import { Link, NavLink } from 'react-router-dom';
+import { useCart } from '../context/CartContext';
 
-const Navbar = ({ cartCount, onCartClick }) => {
+const Navbar = () => {
+  const { totalItems } = useCart();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navLinkClass = ({ isActive }) => 
@@ -41,17 +43,14 @@ const Navbar = ({ cartCount, onCartClick }) => {
           </div>
 
           <div className="flex gap-3">
-             <button 
-               onClick={onCartClick}
-               className="p-2 border-2 border-black rounded-full hover:bg-gray-100 relative transition-transform active:scale-95"
-             >
-               <ShoppingCart className="w-5 h-5" />
-               {cartCount > 0 && (
-                 <span className="absolute -top-1 -right-1 bg-red-500 text-white font-bold text-xs w-5 h-5 flex items-center justify-center rounded-full border-2 border-black">
-                   {cartCount}
-                 </span>
-               )}
-             </button>
+             <Link to="/checkout" className="relative group p-2">
+                <ShoppingCart className="w-6 h-6 group-hover:text-yellow-300 transition-colors" />
+                {totalItems > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full border-2 border-black">
+                        {totalItems}
+                    </span>
+                )}
+             </Link>
              <button 
                 className="md:hidden p-2 border-2 border-black rounded-lg active:bg-gray-100"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}

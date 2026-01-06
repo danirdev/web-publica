@@ -5,6 +5,7 @@ import Footer from './components/Footer';
 import HomePage from './pages/HomePage';
 import ImpresionesPage from './pages/ImpresionesPage';
 import LibreriaPage from './pages/LibreriaPage';
+import CheckoutPage from './pages/CheckoutPage';
 import ContactoPage from './pages/ContactoPage';
 
 // Wrapper para Layout que necesita location (si fuera necesario animaciones)
@@ -28,6 +29,7 @@ const Layout = () => {
                     <Route path="/" element={<HomePage />} />
                     <Route path="/impresiones" element={<ImpresionesPage />} />
                     <Route path="/libreria" element={<LibreriaPage onAddToCart={() => setCartCount(c => c + 1)} />} />
+                    <Route path="/checkout" element={<CheckoutPage />} />
                     <Route path="/contacto" element={<ContactoPage />} />
                 </Routes>
             </main>
