@@ -1,9 +1,14 @@
 import React from 'react';
 import { MapPin, Clock, Phone, HelpCircle, ArrowRight } from 'lucide-react';
 import { SectionTitle } from '../components/UI';
+import { Helmet } from 'react-helmet-async';
 
 const ContactoPage = () => (
   <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 py-12 max-w-4xl mx-auto px-4">
+    <Helmet>
+        <title>Contacto | Fotocopias Ramos</title>
+        <meta name="description" content="Visítanos en Av. Principal 1234, Ciudad Perico. Horarios de atención y contacto por WhatsApp." />
+    </Helmet>
     <div className="text-center mb-12">
       <SectionTitle>¿DÓNDE ESTAMOS?</SectionTitle>
     </div>

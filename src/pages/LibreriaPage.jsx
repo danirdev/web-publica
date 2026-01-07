@@ -3,6 +3,7 @@ import { PenTool, ShoppingCart, Loader } from 'lucide-react';
 import { SectionTitle, CategoryPill } from '../components/UI';
 import { supabase } from '../supabase'; // Conexión real
 import { useCart } from '../context/CartContext'; // Usamos el contexto
+import { Helmet } from 'react-helmet-async';
 
 const LibreriaPage = () => {
   const [activeTab, setActiveTab] = useState('Todo');
@@ -37,6 +38,10 @@ const LibreriaPage = () => {
 
   return (
     <div className="animate-in fade-in slide-in-from-right-4 duration-500 py-12 max-w-6xl mx-auto px-4">
+      <Helmet>
+        <title>Tienda Online | Fotocopias Ramos</title>
+        <meta name="description" content="Catálogo completo de librería. Útiles escolares, oficina y más. Comprá online y recibí en tu casa." />
+      </Helmet>
       <div className="text-center mb-12">
          <div className="inline-flex items-center justify-center w-20 h-20 bg-green-400 border-4 border-black rounded-full mb-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <PenTool className="w-10 h-10 text-white" />

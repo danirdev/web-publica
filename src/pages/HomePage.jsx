@@ -4,11 +4,17 @@ import { useNavigate } from 'react-router-dom';
 import { BrutalButton, SectionTitle } from '../components/UI';
 import { TESTIMONIOS } from '../data/mocks';
 
+import { Helmet } from 'react-helmet-async';
+
 const HomePage = () => {
   const navigate = useNavigate();
 
   return (
     <div className="animate-in fade-in duration-500">
+      <Helmet>
+        <title>Fotocopias Ramos - Impresiones y Librería</title>
+        <meta name="description" content="Tu librería favorita online. Hacemos envíos a todo Perico. Impresiones, útiles escolares y anillados." />
+      </Helmet>
       {/* HERO */}
       <header className="max-w-6xl mx-auto px-4 py-12 md:py-20 grid md:grid-cols-2 gap-12 items-center">
         <div className="space-y-6">

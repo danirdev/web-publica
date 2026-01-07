@@ -2,9 +2,14 @@ import React from 'react';
 import { Printer, Upload } from 'lucide-react';
 import { SectionTitle } from '../components/UI';
 import { PRECIOS_IMPRESION } from '../data/mocks';
+import { Helmet } from 'react-helmet-async';
 
 const ImpresionesPage = () => (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 py-12 max-w-4xl mx-auto px-4">
+      <Helmet>
+        <title>Centro de Copiado | Fotocopias Ramos</title>
+        <meta name="description" content="Envía tus archivos para imprimir y retira sin esperas. Consultá nuestra lista de precios oficial." />
+      </Helmet>
       <div className="text-center mb-12">
         <div className="inline-flex items-center justify-center w-20 h-20 bg-pink-400 border-4 border-black rounded-full mb-6 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <Printer className="w-10 h-10 text-white" />

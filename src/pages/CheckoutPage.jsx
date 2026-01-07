@@ -9,6 +9,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
+import { Helmet } from 'react-helmet-async';
+
 const checkoutSchema = z.object({
   nombre: z.string().optional(),
 });
@@ -75,6 +77,9 @@ const CheckoutPage = () => {
   if (cart.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-6 animate-in fade-in">
+        <Helmet>
+            <title>Carrito Vacío | Fotocopias Ramos</title>
+        </Helmet>
         <div className="text-6xl">🛒</div>
         <h2 className="text-2xl font-black">Tu carrito está vacío</h2>
         <p className="text-gray-500">¡Agrega algunos productos para continuar!</p>
@@ -90,6 +95,9 @@ const CheckoutPage = () => {
 
   return (
     <div className="max-w-2xl mx-auto py-12 px-4 animate-in fade-in">
+      <Helmet>
+        <title>Finalizar Pedido | Fotocopias Ramos</title>
+      </Helmet>
       <SectionTitle>FINALIZAR PEDIDO</SectionTitle>
       
       <div className="bg-white border-4 border-black p-6 rounded-xl shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] mt-8">
