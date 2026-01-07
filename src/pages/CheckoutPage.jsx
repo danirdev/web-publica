@@ -34,7 +34,7 @@ const CheckoutPage = () => {
 
     try {
       // 1. Usar función RPC segura (Bypassea RLS)
-      const { data: ventaId, error: errorVenta } = await supabase.rpc('crear_pedido_web', {
+      const { error: errorVenta } = await supabase.rpc('crear_pedido_web', {
         p_cliente_nombre: data.nombre || "Cliente Web",
         p_cliente_telefono: "", // Ya no pedimos teléfono
         p_total: total,
@@ -50,9 +50,8 @@ const CheckoutPage = () => {
         .join('\n');
 
       const nombreCliente = data.nombre ? data.nombre : "Cliente";
-      const mensaje = `Hola! Soy *${nombreCliente}*.\n` +
-                      `Acabo de hacer el pedido web *#${ventaId}*.\n\n` +
-                      `*Detalle del pedido:*\n${itemsTexto}\n\n` +
+      const mensaje = `Hola! Soy *${nombreCliente}* y quiero realizar el siguiente pedido:\n\n` +
+                      `*Detalle:* \n${itemsTexto}\n\n` +
                       `*Total a pagar: $${total}*`;
 
       const urlWhatsapp = `https://wa.me/${TELEFONO_NEGOCIO}?text=${encodeURIComponent(mensaje)}`;
