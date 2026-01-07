@@ -45,10 +45,15 @@ const ImpresionesPage = () => (
             <Upload className="w-6 h-6" /> SUBIR ARCHIVOS
           </h3>
           <p className="font-bold mb-6">Arrastra tus PDF, Word o imágenes aquí para cotizar.</p>
-          <div className="border-4 border-dashed border-black bg-white rounded-xl h-40 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50">
+          <button 
+            type="button"
+            className="w-full border-4 border-dashed border-black bg-white rounded-xl h-40 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 focus:outline-none focus:ring-4 focus:ring-blue-300 transition-all"
+            onClick={() => {}} // TODO: Implement upload logic
+            aria-label="Subir archivos para cotización"
+          >
              <Upload className="w-10 h-10 text-gray-400 mb-2" />
              <span className="font-bold text-gray-400">Clic para subir</span>
-          </div>
+          </button>
         </div>
   
         <div className="bg-yellow-100 p-8 border-4 border-black rounded-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">

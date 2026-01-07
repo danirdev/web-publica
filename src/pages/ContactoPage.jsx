@@ -55,17 +55,24 @@ const ContactoPage = () => (
         <h3 className="font-black text-2xl mb-4 flex items-center gap-2">
           <HelpCircle className="w-6 h-6" /> PREGUNTAS FRECUENTES
         </h3>
-        {[
-          "¿Imprimen fotos tipo polaroid?",
-          "¿Hacen descuentos por cantidad?",
-          "¿Venden libros escolares?",
-          "¿Tienen servicio técnico de PC?"
-        ].map((q, i) => (
-          <div key={i} className="bg-yellow-50 border-2 border-black p-4 rounded-xl font-bold cursor-pointer hover:bg-yellow-200 transition-colors flex justify-between items-center group">
-            {q}
-            <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
-          </div>
-        ))}
+        <ul className="space-y-4">
+          {[
+            "¿Imprimen fotos tipo polaroid?",
+            "¿Hacen descuentos por cantidad?",
+            "¿Venden libros escolares?",
+            "¿Tienen servicio técnico de PC?"
+          ].map((q, i) => (
+            <li key={i}>
+              <button 
+                className="w-full text-left bg-yellow-50 border-2 border-black p-4 rounded-xl font-bold cursor-pointer hover:bg-yellow-200 transition-colors flex justify-between items-center group focus:outline-none focus:ring-4 focus:ring-yellow-300"
+                onClick={() => {}} // Placeholder for future expansion
+              >
+                {q}
+                <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </button>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   </div>

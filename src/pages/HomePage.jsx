@@ -1,6 +1,6 @@
 import React from 'react';
 import { Printer, PenTool, BookOpen, Star } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { BrutalButton, SectionTitle } from '../components/UI';
 import { TESTIMONIOS } from '../data/mocks';
 
@@ -70,17 +70,17 @@ const HomePage = () => {
               { title: "Útiles Escolares", icon: PenTool, color: "bg-yellow-400", desc: "Todo para la cartuchera.", path: '/libreria' },
               { title: "Anillados", icon: BookOpen, color: "bg-green-400", desc: "Tus apuntes bien ordenados.", path: '/impresiones' }
             ].map((item, i) => (
-              <div 
+              <Link 
                 key={i} 
-                onClick={() => navigate(item.path)}
-                className={`${item.color} p-8 rounded-2xl border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer`}
+                to={item.path}
+                className={`${item.color} p-8 rounded-2xl border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer block`}
               >
                 <div className="w-16 h-16 bg-white border-2 border-black rounded-full flex items-center justify-center mb-6">
                   <item.icon className="w-8 h-8 text-black" />
                 </div>
-                <h3 className="text-2xl font-black mb-2">{item.title}</h3>
-                <p className="font-bold opacity-80">{item.desc}</p>
-              </div>
+                <h3 className="text-2xl font-black mb-2 text-black">{item.title}</h3>
+                <p className="font-bold opacity-80 text-black">{item.desc}</p>
+              </Link>
             ))}
           </div>
         </div>
