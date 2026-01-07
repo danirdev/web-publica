@@ -26,7 +26,7 @@ const CheckoutPage = () => {
   // --- CONFIGURACIÓN ---
   // Pon aquí tu número con código de país, sin espacios ni símbolos (+).
   // Ejemplo Argentina: 549 + característica + número
-  const TELEFONO_NEGOCIO = "5493881234567"; 
+  const TELEFONO_NEGOCIO = "5493886141730"; 
   // ---------------------
 
   const onSubmit = async (data) => {
