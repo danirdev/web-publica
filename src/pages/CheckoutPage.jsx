@@ -10,8 +10,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
 const checkoutSchema = z.object({
-  nombre: z.string().min(2, 'El nombre debe tener al menos 2 caracteres'),
-  telefono: z.string().min(10, 'El teléfono debe tener al menos 10 dígitos').regex(/^\d+$/, 'Solo se permiten números'),
+  nombre: z.string().optional(),
 });
 
 const CheckoutPage = () => {
@@ -36,8 +35,8 @@ const CheckoutPage = () => {
     try {
       // 1. Usar función RPC segura (Bypassea RLS)
       const { data: ventaId, error: errorVenta } = await supabase.rpc('crear_pedido_web', {
-        p_cliente_nombre: data.nombre,
-        p_cliente_telefono: data.telefono,
+        p_cliente_nombre: data.nombre || "Cliente Web",
+        p_cliente_telefono: "", // Ya no pedimos teléfono
         p_total: total,
         p_detalles: cart // Pasamos el carrito directo, la función SQL lo procesa
       });
@@ -48,14 +47,15 @@ const CheckoutPage = () => {
       // Construimos el texto línea por línea
       const itemsTexto = cart
         .map(item => `- ${item.cantidad}x ${item.nombre} ($${item.cantidad * item.precio})`)
-        .join('%0A'); // %0A es el salto de línea para URLs
+        .join('\n');
 
-      const mensaje = `Hola! Soy *${data.nombre}*.%0A` +
-                      `Acabo de hacer el pedido web *#${ventaId}*.%0A%0A` +
-                      `*Detalle del pedido:*%0A${itemsTexto}%0A%0A` +
+      const nombreCliente = data.nombre ? data.nombre : "Cliente";
+      const mensaje = `Hola! Soy *${nombreCliente}*.\n` +
+                      `Acabo de hacer el pedido web *#${ventaId}*.\n\n` +
+                      `*Detalle del pedido:*\n${itemsTexto}\n\n` +
                       `*Total a pagar: $${total}*`;
 
-      const urlWhatsapp = `https://wa.me/${TELEFONO_NEGOCIO}?text=${mensaje}`;
+      const urlWhatsapp = `https://wa.me/${TELEFONO_NEGOCIO}?text=${encodeURIComponent(mensaje)}`;
 
       // 4. Finalizar
       // Abrimos WhatsApp en una pestaña nueva
@@ -73,7 +73,21 @@ const CheckoutPage = () => {
     }
   };
 
-  if (cart.length === 0) return <div className="text-center py-20 font-bold">Tu carrito está vacío</div>;
+  if (cart.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-6 animate-in fade-in">
+        <div className="text-6xl">🛒</div>
+        <h2 className="text-2xl font-black">Tu carrito está vacío</h2>
+        <p className="text-gray-500">¡Agrega algunos productos para continuar!</p>
+        <button 
+          onClick={() => navigate('/')}
+          className="bg-black text-white px-8 py-3 rounded-xl font-bold border-2 border-black hover:bg-white hover:text-black hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all"
+        >
+          VER CATÁLOGO
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-2xl mx-auto py-12 px-4 animate-in fade-in">
@@ -128,7 +142,7 @@ const CheckoutPage = () => {
         {/* Formulario */}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
-            <label className="block font-bold mb-1">Tu Nombre</label>
+            <label className="block font-bold mb-1">Tu Nombre (Opcional)</label>
             <input 
               type="text" 
               className={`w-full border-2 p-2 rounded-lg focus:ring-4 outline-none ${errors.nombre ? 'border-red-500 focus:ring-red-200' : 'border-black focus:ring-green-200'}`}
@@ -136,16 +150,6 @@ const CheckoutPage = () => {
               {...register('nombre')}
             />
             {errors.nombre && <p className="text-red-500 text-sm mt-1 font-medium">{errors.nombre.message}</p>}
-          </div>
-          <div>
-            <label className="block font-bold mb-1">Teléfono</label>
-            <input 
-              type="tel" 
-              className={`w-full border-2 p-2 rounded-lg focus:ring-4 outline-none ${errors.telefono ? 'border-red-500 focus:ring-red-200' : 'border-black focus:ring-green-200'}`}
-              placeholder="Ej: 3881234567"
-              {...register('telefono')}
-            />
-             {errors.telefono && <p className="text-red-500 text-sm mt-1 font-medium">{errors.telefono.message}</p>}
           </div>
 
           <button 
