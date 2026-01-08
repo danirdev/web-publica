@@ -161,11 +161,12 @@ const CheckoutPage = () => {
 
           <button 
             disabled={loading}
-            className="w-full bg-green-500 text-white border-2 border-black py-4 rounded-xl font-black text-xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-y-[4px] active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
+            className="w-full bg-green-500 text-white border-2 border-black py-3 sm:py-4 px-4 rounded-xl font-black text-base sm:text-xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-y-[2px] hover:shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-y-[4px] active:shadow-none disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center justify-center gap-2"
           >
             {loading ? 'Procesando...' : (
               <>
-                <MessageCircle className="w-6 h-6" /> ENVIAR PEDIDO POR WHATSAPP
+                <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6 shrink-0" /> 
+                <span>ENVIAR PEDIDO POR WHATSAPP</span>
               </>
             )}
           </button>

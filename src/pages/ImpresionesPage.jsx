@@ -40,7 +40,7 @@ const ImpresionesPage = () => (
   
       {/* COMO FUNCIONA */}
       <div className="grid md:grid-cols-2 gap-8 mb-12">
-        <div className="bg-blue-100 p-8 border-4 border-black rounded-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+        <div className="bg-blue-100 p-6 sm:p-8 border-4 border-black rounded-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <h3 className="font-black text-2xl mb-4 flex items-center gap-2">
             <Upload className="w-6 h-6" /> SUBIR ARCHIVOS
           </h3>
@@ -56,7 +56,7 @@ const ImpresionesPage = () => (
           </button>
         </div>
   
-        <div className="bg-yellow-100 p-8 border-4 border-black rounded-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+        <div className="bg-yellow-100 p-6 sm:p-8 border-4 border-black rounded-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
           <h3 className="font-black text-2xl mb-4">¿CÓMO RETIRO?</h3>
           <ul className="space-y-4">
             <li className="flex items-start gap-3">

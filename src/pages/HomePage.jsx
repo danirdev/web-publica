@@ -21,7 +21,7 @@ const HomePage = () => {
           <div className="inline-block px-4 py-1 bg-green-300 border-2 border-black rounded-full font-bold text-sm shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] transform -rotate-2">
             ¡Hacemos envíos a todo Perico! 🛵
           </div>
-          <h1 className="text-5xl md:text-7xl font-black leading-none text-black">
+          <h1 className="text-4xl md:text-7xl font-black leading-none text-black">
             TU LIBRERÍA <br/>
             <span className="text-blue-500">FAVORITA</span> <br/>
             ESTÁ ONLINE.
@@ -73,7 +73,7 @@ const HomePage = () => {
               <Link 
                 key={i} 
                 to={item.path}
-                className={`${item.color} p-8 rounded-2xl border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer block`}
+                className={`${item.color} p-6 md:p-8 rounded-2xl border-4 border-black shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] hover:translate-y-1 hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer block`}
               >
                 <div className="w-16 h-16 bg-white border-2 border-black rounded-full flex items-center justify-center mb-6">
                   <item.icon className="w-8 h-8 text-black" />

@@ -136,50 +136,50 @@ const LibreriaPage = () => {
       ) : (
         <>
             {/* Grid de Productos */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
             {currentProducts.map(prod => (
                 <div key={prod.id} className="group relative flex flex-col h-full">
                 <div className="bg-white border-4 border-black rounded-2xl overflow-hidden shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] group-hover:shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] group-hover:-translate-y-1 transition-all duration-200 flex flex-col h-full">
                     {/* Imagen */}
-                    <div className="h-48 bg-gray-50 border-b-4 border-black relative overflow-hidden flex items-center justify-center">
+                    <div className="h-32 sm:h-48 bg-gray-50 border-b-4 border-black relative overflow-hidden flex items-center justify-center">
                         {prod.imagen_url ? (
                             <img src={prod.imagen_url} alt={prod.nombre} className="w-full h-full object-cover" />
                         ) : (
                             <span className="text-gray-400 font-bold text-xs">Sin imagen</span>
                         )}
-                        <div className="absolute top-2 right-2 bg-white border-2 border-black px-2 py-1 text-xs font-bold rounded">
+                        <div className="absolute top-2 right-2 bg-white border-2 border-black px-2 py-1 text-xs font-bold rounded hidden sm:block">
                             {prod.categoria}
                         </div>
                     </div>
                     
                     {/* Info */}
-                    <div className="p-4 flex flex-col flex-1 justify-between">
+                    <div className="p-3 sm:p-4 flex flex-col flex-1 justify-between">
                     <div>
-                        <h3 className="font-black text-lg leading-tight mb-2 line-clamp-2">{prod.nombre}</h3>
+                        <h3 className="font-black text-sm sm:text-lg leading-tight mb-2 line-clamp-2">{prod.nombre}</h3>
                     </div>
                     
-                    <div className="flex justify-between items-center mt-4">
-                        <span className="text-xl font-bold bg-yellow-300 px-2 border-2 border-black -rotate-2">
+                    <div className="flex flex-col sm:flex-row justify-between items-center mt-2 sm:mt-4 gap-2">
+                        <span className="text-lg sm:text-xl font-bold bg-yellow-300 px-2 border-2 border-black -rotate-2">
                             ${prod.precio}
                         </span>
                         {/* Lógica de Stock */}
                         {(prod.stock > 0 || prod.es_servicio) ? (
                         <button 
                             onClick={() => addToCart(prod)} 
-                            className="w-10 h-10 bg-black text-white rounded-lg flex items-center justify-center hover:bg-green-600 transition-colors border-2 border-transparent hover:border-black active:scale-95"
+                            className="w-full sm:w-10 h-8 sm:h-10 bg-black text-white rounded-lg flex items-center justify-center hover:bg-green-600 transition-colors border-2 border-transparent hover:border-black active:scale-95"
                             title="Agregar al carrito"
                         >
-                            <ShoppingCart className="w-5 h-5" />
+                            <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5" />
                         </button>
                         ) : (
-                        <div className="flex flex-col items-end">
-                            <span className="text-xs font-bold text-red-500 uppercase tracking-wider mb-1">Sin Stock</span>
+                        <div className="flex flex-col items-center sm:items-end w-full sm:w-auto">
+                            <span className="text-[10px] sm:text-xs font-bold text-red-500 uppercase tracking-wider mb-1">Sin Stock</span>
                             <button 
                                 disabled
-                                className="w-10 h-10 bg-gray-200 text-gray-400 rounded-lg flex items-center justify-center border-2 border-transparent cursor-not-allowed"
+                                className="w-full sm:w-10 h-8 sm:h-10 bg-gray-200 text-gray-400 rounded-lg flex items-center justify-center border-2 border-transparent cursor-not-allowed"
                                 title="Producto sin stock"
                             >
-                                <ShoppingCart className="w-5 h-5" />
+                                <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5" />
                             </button>
                         </div>
                         )}
@@ -192,7 +192,8 @@ const LibreriaPage = () => {
 
             {/* Paginación */}
             {totalPages > 1 && (
-                <div className="inflex justify-center items-center gap-4 mt-12 bg-white inline-flex mx-auto p-4 rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                <div className="flex justify-center mt-12">
+                  <div className="flex justify-center items-center gap-4 bg-white p-4 rounded-xl border-2 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
                     <button 
                         onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
                         disabled={currentPage === 1}
@@ -212,6 +213,7 @@ const LibreriaPage = () => {
                     >
                         <ChevronRight className="w-6 h-6" />
                     </button>
+                  </div>
                 </div>
             )}
         </>
