@@ -87,9 +87,9 @@ SELECT
     precio_venta as precio, 
     stock_actual as stock, 
     imagen_url,
-    sku
-FROM public.productos
-WHERE stock_actual > 0 OR es_servicio = TRUE;
+    sku,
+    es_servicio
+FROM public.productos;
 
 -- =============================================
 -- FUNCIONES (LÓGICA DE NEGOCIO)

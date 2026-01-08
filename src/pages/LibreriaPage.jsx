@@ -95,12 +95,27 @@ const LibreriaPage = () => {
                     <span className="text-xl font-bold bg-yellow-300 px-2 border-2 border-black -rotate-2">
                         ${prod.precio}
                     </span>
-                    <button 
-                      onClick={() => addToCart(prod)} // AHORA SÍ FUNCIONA
-                      className="w-10 h-10 bg-black text-white rounded-lg flex items-center justify-center hover:bg-blue-600 transition-colors border-2 border-transparent hover:border-black active:scale-95"
-                    >
-                      <ShoppingCart className="w-5 h-5" />
-                    </button>
+                    {/* Lógica de Stock: Si tiene stock o es servicio, permite comprar. Si no, muestra "Sin Stock" */}
+                    {(prod.stock > 0 || prod.es_servicio) ? (
+                      <button 
+                        onClick={() => addToCart(prod)} 
+                        className="w-10 h-10 bg-black text-white rounded-lg flex items-center justify-center hover:bg-green-600 transition-colors border-2 border-transparent hover:border-black active:scale-95"
+                        title="Agregar al carrito"
+                      >
+                        <ShoppingCart className="w-5 h-5" />
+                      </button>
+                    ) : (
+                      <div className="flex flex-col items-end">
+                          <span className="text-xs font-bold text-red-500 uppercase tracking-wider mb-1">Sin Stock</span>
+                          <button 
+                            disabled
+                            className="w-10 h-10 bg-gray-200 text-gray-400 rounded-lg flex items-center justify-center border-2 border-transparent cursor-not-allowed"
+                            title="Producto sin stock"
+                          >
+                            <ShoppingCart className="w-5 h-5" />
+                          </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
